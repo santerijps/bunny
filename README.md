@@ -104,10 +104,22 @@ This project was created using `bun init` in bun v1.1.3. [Bun](https://bun.sh) i
 
 ## Windows setup
 
+### Method 1: Powershell script
+
+This method requires that you have Bun installed on your system.
 Create a Powershell script and add it to PATH:
 
-```bash
-echo bun path/to/cli.ts $args > bunny.ps1
+```powershell
+bun path/to/cli.ts $args
+```
+
+### Method 2: Binary executable
+
+**NOTE:** Using the `--minify` flag breaks the program as of now.
+To build a standalone executable, run the following command:
+
+```txt
+bun build .\src\cli.ts --target=bun --compile --outfile bunny.exe
 ```
 
 ## TODO
