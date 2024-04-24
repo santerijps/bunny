@@ -5,7 +5,8 @@ import $html_parser from "node-html-parser";
 import type { AppConfig } from "./types";
 import $chokidar from "chokidar";
 import { try_process_page } from ".";
-import Logger from "./log";
+import Logger from "./util/logger";
+
 
 export default function start_dev_server(config: AppConfig) {
   console.clear();
@@ -69,7 +70,7 @@ function is_websocket_upgrade_request(req: Request) {
   );
 }
 
-function get_websocket_client_script(port: number) {
+function generate_websocket_client_script(port: number) {
   return `
 <script data-description="Bunny Dev Server WebSocket Implementation">
   /*
@@ -126,7 +127,7 @@ function add_websocket_client_script(html: string, port: number) {
   if (body === null) {
     throw new $util.BunnyError("[add_websocket_client_script] Failed to add WebSocket client script, body not found!");
   }
-  body.innerHTML += get_websocket_client_script(port);
+  body.innerHTML += generate_websocket_client_script(port);
   return doc.toString();
 }
 

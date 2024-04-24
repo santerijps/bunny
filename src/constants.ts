@@ -1,7 +1,7 @@
 import $path from "node:path";
 import $process from "node:process";
-import $showdown from "showdown";
 import $minify from "minify";
+import $showdown from "showdown";
 import $typescript from "typescript";
 
 export const DEV_SERVER_WS_PATH = "/bunny-ws";
@@ -78,6 +78,6 @@ export const DEFAULT_HTML_LAYOYUT = `<!DOCTYPE html>
     <title>$title</title>
   </head>
   <body>
-    {{slot}}
+    $slot
   </body>
 </html>`;

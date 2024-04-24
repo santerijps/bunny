@@ -1,7 +1,7 @@
 import { type HTMLElement } from "node-html-parser";
-import type { Page } from "./types";
+import type { Page } from "../types";
 import $path from "node:path";
-import * as $util from "./util";
+import * as $util from "../util";
 
 export function query_or_throw(selector: string, root: HTMLElement) {
   const element = root.querySelector(selector);

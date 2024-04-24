@@ -1,7 +1,7 @@
 import * as $rimraf from "rimraf";
 import { process_directory } from ".";
 import * as $constants from "./constants";
-import start_dev_server from "./dev_server";
+import start_dev_server from "./devserver";
 import type { AppConfig } from "./types";
 import * as $util from "./util";
 import $arg from "arg"

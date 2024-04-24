@@ -62,10 +62,10 @@ There are several template functions and variables that can be used in all proje
 |---|---|---|---|
 |`embed`|`src`|Embed the contents of the file referenced by `src`. `src` can be a local file path (relative or absolute) or a remote URL. | `{{ embed ./footer.html }}` |
 |`data_url`|`src`|Convert the file referenced by `src` into a data url. This is useful when embedding favicons, videos, PDFs etc. | `{{ data_url https://via.placeholder.com/600/92c952 }}` |
-|`slot`|-|Used in `layout` files to indicate where the page (Markdown file) content should be inserted. | `{{ slot }}` |
 
 | Variable | Description |
 |---|---|
+|`slot`|Used in `layout` files to indicate where the page file content should be inserted. |
 |`title`|Page title, as defined in `PageMeta.title`. Can be used in `layout` files to define the document title of each page.|
 
 ## Data model
@@ -97,7 +97,7 @@ bun install
 To run:
 
 ```bash
-bun run index.ts
+bun run src/cli.ts
 ```
 
 This project was created using `bun init` in bun v1.1.3. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
@@ -107,7 +107,7 @@ This project was created using `bun init` in bun v1.1.3. [Bun](https://bun.sh) i
 Create a Powershell script and add it to PATH:
 
 ```bash
-echo bun path/to/cli.ts $args > bunssg.ps1
+echo bun path/to/cli.ts $args > bunny.ps1
 ```
 
 ## TODO
@@ -117,6 +117,5 @@ echo bun path/to/cli.ts $args > bunssg.ps1
 - Developer experience
   - Figure out what resource dependencies each page has and make a map of it
     - This can be used to figure out which file needs to be reloaded if a dependency is modified
-  - Change the `slot` template function into a template variable `$slot`
 - Optimization
   - Remote resource caching

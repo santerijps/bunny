@@ -1,4 +1,4 @@
-import * as $util from "./util";
+import * as $util from ".";
 
 export default class Logger {
   public static info(operation: string, message: string) {

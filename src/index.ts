@@ -1,19 +1,17 @@
 import type { AppConfig, Page, ResolvedPageMeta } from "./types";
 import $path from "node:path";
 import * as $util from "./util";
-import $showdown from "showdown";
 import * as $constants from "./constants";
-import $yaml from "yaml";
-import $pug from "pug";
 import $html_parser, {type HTMLElement} from "node-html-parser";
-import * as $document from "./document";
+import * as $document from "./util/document";
 import * as $minify from "minify";
 import $hljs from "highlight.js";
 import $he from "he";
 import * as $sass from "sass";
 import $less from "less";
 import $typescript from "typescript";
-import Logger from "./log";
+import Logger from "./util/logger";
+import * as $converters from "./converters";
 
 // TODO:  Build a showdown.js extension that checks whether ![]() shold be embedded or not.
 //        For example, the pattern `@![]()` could produce an embedded resource
@@ -44,18 +42,18 @@ export async function try_process_page(page: Page, config: AppConfig) {
 }
 
 export async function process_page(page: Page, config: AppConfig) {
-  let [html, meta] = await convert_page_to_html(page, config);
+  let [html, meta] = await $converters.convert_page(page, config);
 
   if (meta.layout) {
     if ($util.is_full_html_document(html)) {
       throw new $util.BunnyError(`[process_page] Cannot add layout, the page is a full HTML document already: ${page.src}`);
     }
     let layout = await meta.layout.file.read_text();
-    layout = await convert_text_to_html(layout, $path.extname(meta.layout.file.url));
+    layout = await $converters.convert_text(layout, $path.extname(meta.layout.file.url));
     layout = prefix_relative_urls(layout, $path.dirname(meta.layout.file.url));
-    html = layout.replaceAll(/\{\{\s*slot\s*\}\}/g, html);
+    html = layout.replaceAll("$slot", html);
   } else if (!$util.is_full_html_document(html)) {
-    html = $constants.DEFAULT_HTML_LAYOYUT.replaceAll(/\{\{\s*slot\s*\}\}/g, html);
+    html = $constants.DEFAULT_HTML_LAYOYUT.replaceAll("$slot", html);
   }
 
   html = await process_page_functions(html, page.src_dir);
@@ -120,40 +118,6 @@ export async function process_page(page: Page, config: AppConfig) {
     html = await $minify.minify(page.dst, $constants.MINIFY_OPTIONS);
     await $util.write_file(page.dst, html);
     Logger.minify(page.dst);
-  }
-}
-
-export async function convert_page_to_html(page: Page, config: AppConfig): Promise<[string, ResolvedPageMeta]> {
-  const page_text = await $util.read_file_text(page.src);
-  switch (page.ext) {
-    case ".md": {
-      const converter = new $showdown.Converter($constants.SHOWDOWN_OPTIONS);
-      const html = converter.makeHtml(page_text);
-      const meta = $yaml.parse(converter.getMetadata(true) as string) ?? {};
-      return [html, await $util.resolve_page_meta(meta, page, config)];
-    }
-    case ".htm":
-    case ".html": // TODO: Figure out how to include a meta section in HTML and Pug files
-      return [page_text, await $util.resolve_page_meta({}, page, config)];
-    case ".pug":
-      return [$pug.render(page_text), await $util.resolve_page_meta({}, page, config)];
-    default:
-      throw new $util.BunnyError(`[convert_page_to_html] Unsupported page type: ${page.ext}`);
-  }
-}
-
-export async function convert_text_to_html(text: string, ext: string) {
-  switch (ext) {
-    case ".md": {
-      const converter = new $showdown.Converter($constants.SHOWDOWN_OPTIONS);
-      return converter.makeHtml(text);
-    }
-    case ".html":
-      return text;
-    case ".pug":
-      return $pug.render(text);
-    default:
-      throw new $util.BunnyError(`[convert_text_to_html] Unsupported file extension: ${ext}`);
   }
 }
 

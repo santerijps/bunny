@@ -1,8 +1,8 @@
-import type { AppConfig, Page, PageMeta, ResolvedPageMeta, ResolvedSource, Resource } from "./types";
-import $path from "node:path";
+import * as $constants from "../constants";
+import type { AppConfig, Page, PageMeta, ResolvedPageMeta, ResolvedSource, Resource } from "../types";
 import $mime from "mime-types";
-import * as $constants from "./constants";
 import $fs from "node:fs";
+import $path from "node:path";
 
 export function get_or_default(object: Record<string, any>, keys: string[], default_value: any) {
   for (const key of keys) {
