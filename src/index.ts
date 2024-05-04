@@ -340,7 +340,7 @@ export async function process_resource(resource: $util.LazyResource, document: H
 }
 
 async function process_hard_coded_resources(document: HTMLElement, page: Page, config: AppConfig) {
-  for (const element of document.querySelectorAll("[src], [href]")) {
+  for (const element of document.querySelectorAll("[src], [href]:not(a)")) {
     const src_or_href = element.getAttribute("src") ?? element.getAttribute("href") ?? "";
 
     if ($util.is_data_url(src_or_href)) {
