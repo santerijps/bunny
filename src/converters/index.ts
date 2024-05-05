@@ -16,7 +16,7 @@ export async function convert_page(page: Page, config: AppConfig) {
   case ".pug":
     return await pug.convert_page(text, page, config);
   default:
-    throw new BunnyError(`[preprocess_page] Unsupported page type: ${page.ext}`);
+    throw new BunnyError(`[convert_page] Unsupported page type: ${page.ext}`);
   }
 }
 
@@ -30,6 +30,6 @@ export async function convert_text(text: string, ext: string) {
   case ".pug":
     return pug.convert_text(text);
   default:
-    throw new BunnyError(`[convert_to_html] Unsupported file extension: ${ext}`);
+    throw new BunnyError(`[convert_text] Unsupported file extension: ${ext}`);
   }
 }
