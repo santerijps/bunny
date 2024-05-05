@@ -126,6 +126,9 @@ bun build .\src\cli.ts --target=bun --compile --outfile bunny.exe
 
 - Features
   - Build a showdown.js extension for resources that should not be embedded
+  - Embed + build different file types (currently just embedding is supported)
+    - e.g. embed a .pug file and compile it to HTML right in the document
+    - Embed and build other file types with the <?type ?> syntax in any document?
 - Developer experience
   - Figure out what resource dependencies each page has and make a map of it
     - This can be used to figure out which file needs to be reloaded if a dependency is modified
