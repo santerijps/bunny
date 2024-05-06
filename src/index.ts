@@ -135,6 +135,11 @@ export async function process_page_functions(html: string, working_directory: st
     const [full_match, function_name, unresolved_src] = match;
     const src = $util.resolve_src_location(unresolved_src, working_directory);
     switch (function_name) {
+      case "base64": {
+        const data_url = await $util.url_to_base64_data_url(src);
+        html = html.replace(regex, data_url);
+        break;
+      }
       case "embed": {
         const file_content = await $util.read_file_text(src);
         html = html.replace(regex, file_content);
@@ -145,11 +150,6 @@ export async function process_page_functions(html: string, working_directory: st
         const ext = $path.extname(src);
         const text = await $converters.convert_text(file_content, {}, ext);
         html = html.replace(regex, text);
-        break;
-      }
-      case "data_url": {
-        const data_url = await $util.url_to_base64_data_url(src);
-        html = html.replace(regex, data_url);
         break;
       }
       default:

@@ -62,7 +62,7 @@ There are several template functions and variables that can be used in all proje
 |---|---|---|---|
 |`embed`|`src`|Embed the contents of the file referenced by `src`. `src` can be a local file path (relative or absolute) or a remote URL. | `{{ embed ./footer.html }}` |
 |`render`|`src`|Read and render a template file refrerenced by `src`. Supports ejs, handlebars, markdown, mustache and pug.|`{{render template.pug}}`|
-|`data_url`|`src`|Convert the file referenced by `src` into a data url. This is useful when embedding favicons, videos, PDFs etc. | `{{ data_url https://via.placeholder.com/600/92c952 }}` |
+|`base64`|`src`|Convert the file referenced by `src` into a base64 encoded data url. This is useful when embedding favicons, videos, PDFs etc. | `{{ base64 https://via.placeholder.com/600/92c952 }}` |
 
 | Variable | Description |
 |---|---|
@@ -120,7 +120,7 @@ bun path/to/cli.ts $args
 To build a standalone executable, run the following command:
 
 ```txt
-bun build .\src\cli.ts --target=bun --compile --outfile bunny.exe
+bun build ./src/cli.ts --target=bun --compile --outfile ./bin/bunny.exe
 ```
 
 ## TODO
@@ -128,6 +128,7 @@ bun build .\src\cli.ts --target=bun --compile --outfile bunny.exe
 - Features
   - Build a showdown.js extension for resources that should not be embedded
 - Developer experience
+  - Show build errors in browser in watch mode
   - Figure out what resource dependencies each page has and make a map of it
     - This can be used to figure out which file needs to be reloaded if a dependency is modified
 - Optimization
