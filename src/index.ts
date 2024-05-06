@@ -21,6 +21,7 @@ import * as $converters from "./converters";
 //        Page        => List of dependencies
 //        Dependency  => List of pages that depend on it
 
+
 export async function process_directory(config: AppConfig) {
   const glob = new Bun.Glob("**/*");
   for await (const relative_file_path of glob.scan(config.src_dir_path)) {
@@ -32,6 +33,7 @@ export async function process_directory(config: AppConfig) {
   }
 }
 
+
 export async function try_process_page(page: Page, config: AppConfig) {
   try {
     await process_page(page, config)
@@ -40,6 +42,7 @@ export async function try_process_page(page: Page, config: AppConfig) {
     Logger.error(relative_path, error.toString());
   }
 }
+
 
 export async function process_page(page: Page, config: AppConfig) {
   let [html, meta] = await $converters.convert_page(page, config);
@@ -121,6 +124,7 @@ export async function process_page(page: Page, config: AppConfig) {
   }
 }
 
+
 export async function process_page_functions(html: string, working_directory: string) {
   const regex = /\{\{\s*([\w]+)\s+(.*?)\s*\}\}/;
   while (true) {
@@ -148,9 +152,11 @@ export async function process_page_functions(html: string, working_directory: st
   return html;
 }
 
+
 export function process_page_variables(html: string, page: Page, meta: ResolvedPageMeta) {
   return html.replaceAll("$title", $document.get_title(page, meta.title));
 }
+
 
 export async function process_resource(resource: $util.LazyResource, document: HTMLElement, config: AppConfig) {
   const mime_type = $util.parse_file_mime_type(resource.src).unwrap();
@@ -339,6 +345,7 @@ export async function process_resource(resource: $util.LazyResource, document: H
   }
 }
 
+
 async function process_hard_coded_resources(document: HTMLElement, page: Page, config: AppConfig) {
   for (const element of document.querySelectorAll("[src], [href]:not(a)")) {
     const src_or_href = element.getAttribute("src") ?? element.getAttribute("href") ?? "";
@@ -390,6 +397,7 @@ async function process_hard_coded_resources(document: HTMLElement, page: Page, c
     }
   }
 }
+
 
 export function prefix_relative_urls(html: string, prefix: string) {
   // embed and data_url page functions

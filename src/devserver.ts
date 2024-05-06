@@ -59,6 +59,7 @@ export default function start_dev_server(config: AppConfig) {
   });
 }
 
+
 function is_websocket_upgrade_request(req: Request) {
   const connection_header = req.headers.get("Connection") ?? "";
   const upgrade_header = req.headers.get("Upgrade") ?? "";
@@ -69,6 +70,7 @@ function is_websocket_upgrade_request(req: Request) {
     path.endsWith($constants.DEV_SERVER_WS_PATH)
   );
 }
+
 
 function generate_websocket_client_script(port: number) {
   return `
@@ -121,6 +123,7 @@ function generate_websocket_client_script(port: number) {
 </script>`;
 }
 
+
 function add_websocket_client_script(html: string, port: number) {
   const doc = $html_parser.parse(html);
   const body = doc.querySelector("body");
@@ -130,6 +133,7 @@ function add_websocket_client_script(html: string, port: number) {
   body.innerHTML += generate_websocket_client_script(port);
   return doc.toString();
 }
+
 
 function start_file_watcher(config: AppConfig, event_service: $util.EventService) {
   $chokidar.watch(config.src_dir_path).on("all", async (event_name, absolute_file_path) => {

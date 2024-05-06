@@ -5,6 +5,7 @@ import * as md from "./md";
 import * as html from "./html";
 import * as pug from "./pug";
 
+
 export async function convert_page(page: Page, config: AppConfig) {
   const text = await read_file_text(page.src);
   switch (page.ext) {
@@ -19,6 +20,7 @@ export async function convert_page(page: Page, config: AppConfig) {
     throw new BunnyError(`[convert_page] Unsupported page type: ${page.ext}`);
   }
 }
+
 
 export async function convert_text(text: string, ext: string) {
   switch (ext) {

@@ -7,6 +7,7 @@ import * as $util from "./util";
 import $arg from "arg"
 import $process from "node:process";
 
+
 async function main() {
   const config = parse_args();
   $rimraf.rimrafSync(config.dst_dir_path, {preserveRoot: false});
@@ -16,6 +17,7 @@ async function main() {
     await process_directory(config);
   }
 }
+
 
 function print_app_usage() {
   const message = [
@@ -33,6 +35,7 @@ function print_app_usage() {
   ].join("\n");
   console.warn(message);
 }
+
 
 function parse_args(): AppConfig {
   const args = $arg({
@@ -70,5 +73,6 @@ function parse_args(): AppConfig {
     port: port,
   };
 }
+
 
 await main();
