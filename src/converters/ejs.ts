@@ -1,6 +1,6 @@
 import type { AppConfig, Page, ResolvedPageMeta } from "../types";
 import { resolve_page_meta } from "../util";
-import { compile } from "pug";
+import { render } from "ejs";
 
 
 // TODO: Figure out how to include a meta section
@@ -12,6 +12,5 @@ export async function convert_page(text: string, data: any, page: Page, config: 
 
 
 export function convert_text(text: string, data: any) {
-  const renderer = compile(text, {});
-  return renderer(data);
+  return render(text, data, {});
 }

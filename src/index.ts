@@ -45,14 +45,14 @@ export async function try_process_page(page: Page, config: AppConfig) {
 
 
 export async function process_page(page: Page, config: AppConfig) {
-  let [html, meta] = await $converters.convert_page(page, config);
+  let [html, meta] = await $converters.convert_page({}, page, config);
 
   if (meta.layout) {
     if ($util.is_full_html_document(html)) {
       throw new $util.BunnyError(`[process_page] Cannot add layout, the page is a full HTML document already: ${page.src}`);
     }
     let layout = await meta.layout.file.read_text();
-    layout = await $converters.convert_text(layout, $path.extname(meta.layout.file.url));
+    layout = await $converters.convert_text(layout, {}, $path.extname(meta.layout.file.url));
     layout = prefix_relative_urls(layout, $path.dirname(meta.layout.file.url));
     html = layout.replaceAll("$slot", html);
   } else if (!$util.is_full_html_document(html)) {
@@ -138,6 +138,13 @@ export async function process_page_functions(html: string, working_directory: st
       case "embed": {
         const file_content = await $util.read_file_text(src);
         html = html.replace(regex, file_content);
+        break;
+      }
+      case "render": {
+        const file_content = await $util.read_file_text(src);
+        const ext = $path.extname(src);
+        const text = await $converters.convert_text(file_content, {}, ext);
+        html = html.replace(regex, text);
         break;
       }
       case "data_url": {
